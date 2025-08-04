@@ -143,28 +143,28 @@ if __name__ == "__main__":
 ```
 class TrieNode:
     def __init__(self):
-        self.hijos = {}  # Diccionario para los hijos
-        self.is_end_of_word = False  # Marca el final de una palabra
+        self.hijos = {}  # diccionario para los hijos
+        self.is_end_of_word = False  # marca el final de una palabra
 
 
 class Trie:
     def __init__(self):
-        self.raiz = TrieNode()  # Nodo raíz del Trie
+        self.raiz = TrieNode()  # nodo raiz del trie
 
     def insert(self, palabra):
         """
-        Inserta una palabra en el Trie.
+        inserta una palabra en el trie.
         """
         nodo_actual = self.raiz
         for letra in palabra:
             if letra not in nodo_actual.hijos:
                 nodo_actual.hijos[letra] = TrieNode()
             nodo_actual = nodo_actual.hijos[letra]
-        nodo_actual.is_end_of_word = True  # Marca el final de la palabra
+        nodo_actual.is_end_of_word = True  # marca el final de la palabra
 
     def autocomplete(self, prefijo):
         """
-        Devuelve todas las palabras que comienzan con el prefijo dado.
+        devuelve todas las palabras que comienzan con el prefijo dado.
         """
         nodo_actual = self.raiz
         resultados = []
@@ -172,16 +172,16 @@ class Trie:
         # 1. Navega hasta el final del prefijo
         for letra in prefijo:
             if letra not in nodo_actual.hijos:
-                return []  # No se encuentran coincidencias
+                return []  # no se encuentran coincidencias
             nodo_actual = nodo_actual.hijos[letra]
 
-        # 2. Realiza DFS (búsqueda en profundidad) desde el nodo final del prefijo
+        # 2. Realiza DFS (busqueda en profundidad) desde el nodo final del prefijo
         self._dfs(nodo_actual, prefijo, resultados)
         return resultados
 
     def _dfs(self, nodo, prefijo, resultados):
         """
-        Realiza una búsqueda en profundidad para encontrar todas las palabras
+        realiza una busqueda en profundidad para encontrar todas las palabras
         desde el nodo dado, agregando las palabras encontradas a los resultados.
         """
         if nodo.is_end_of_word:
@@ -191,7 +191,7 @@ class Trie:
             self._dfs(hijo, prefijo + letra, resultados)
 
 
-# Función principal para probar el sistema
+# Funcion principal para probar el sistema
 def main():
     trie = Trie()
 
@@ -200,7 +200,7 @@ def main():
     for palabra in palabras:
         trie.insert(palabra)
 
-    # Probar la función de autocompletar
+    # Probar la funcion de autocompletar
     prefijo = "ho"
     print(f"Palabras que comienzan con '{prefijo}':")
     print(trie.autocomplete(prefijo))
@@ -217,3 +217,77 @@ if __name__ == "__main__":
 
     main()
 
+```
+#PUNTO 4
+
+<img width="615" height="775" alt="image" src="https://github.com/user-attachments/assets/d303ad13-996b-4adb-80b8-0e8fa1e0dddb" />
+
+```
+class SistemaRecomendacion:
+    def __init__(self):
+        # Diccionario que mapea usuarios a un conjunto de productos que han comprado
+        self.usuarios_productos = {}
+
+    def add_purchase(self, usuario, producto):
+        """
+        Agrega una compra realizada por un usuario.
+        """
+        if usuario not in self.usuarios_productos:
+            self.usuarios_productos[usuario] = set()
+        self.usuarios_productos[usuario].add(producto)
+
+    def get_recommendations(self, usuario):
+        """
+        Devuelve recomendaciones para un usuario basadas en compras realizadas por otros usuarios
+        con productos similares.
+        """
+        recomendaciones = set()
+        productos_comprados = self.usuarios_productos.get(usuario, set())
+
+        # Si el usuario no tiene compras, no hay recomendaciones
+        if not productos_comprados:
+            return recomendaciones
+
+        # Buscar usuarios que han comprado productos similares
+        for otro_usuario, productos in self.usuarios_productos.items():
+            if otro_usuario != usuario:
+                # Si el usuario comparte algún producto con otro usuario, agregamos productos nuevos
+                productos_similares = productos_comprados.intersection(productos)
+                if productos_similares:
+                    recomendaciones.update(productos - productos_comprados)
+
+        return recomendaciones
+
+
+# Función principal para probar el sistema
+def main():
+    # Crear el sistema de recomendación
+    sistema = SistemaRecomendacion()
+
+    # Agregar compras de usuarios
+    sistema.add_purchase("usuario1", "productoA")
+    sistema.add_purchase("usuario1", "productoB")
+    sistema.add_purchase("usuario2", "productoA")
+    sistema.add_purchase("usuario2", "productoC")
+    sistema.add_purchase("usuario3", "productoB")
+    sistema.add_purchase("usuario3", "productoC")
+    sistema.add_purchase("usuario4", "productoD")
+
+    # Obtener recomendaciones para un usuario
+    recomendaciones_usuario1 = sistema.get_recommendations("usuario1")
+    print("Recomendaciones para usuario1:", recomendaciones_usuario1)
+
+    recomendaciones_usuario2 = sistema.get_recommendations("usuario2")
+    print("Recomendaciones para usuario2:", recomendaciones_usuario2)
+
+    recomendaciones_usuario3 = sistema.get_recommendations("usuario3")
+    print("Recomendaciones para usuario3:", recomendaciones_usuario3)
+
+    recomendaciones_usuario4 = sistema.get_recommendations("usuario4")
+    print("Recomendaciones para usuario4:", recomendaciones_usuario4)
+
+
+if __name__ == "__main__":
+    main()
+
+```
