@@ -137,6 +137,7 @@ if __name__ == "__main__":
 
 ```
 #PUNTO 3
+
 <img width="632" height="758" alt="image" src="https://github.com/user-attachments/assets/748c3af1-5a54-49c2-ace7-6c9ffb9d979d" />
 
 ```
