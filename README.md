@@ -2,7 +2,8 @@
 
 #PUNTO 1
 <img width="1229" height="750" alt="image" src="https://github.com/user-attachments/assets/5bac0f85-a705-494b-a1d3-ecf870392317" />
-`class Navegador:
+`` 
+class Navegador:
     def __init__(self):
         self.historial_retroceso = []  # pila para ir atras
         self.historial_avance = []  # pila para ir adelante
@@ -47,4 +48,5 @@ navegador.ir_atras()  # volver a pagina 2
 navegador.ir_atras()  # volver a pagina 1
 navegador.ir_adelante()  # avanzar a pagina 2
 navegador.ir_adelante()  # avanzar a pagina 3
-`
+
+``
