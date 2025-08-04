@@ -132,6 +132,87 @@ def main():
     # mostrar el estado de la cola despues de atender algunos clientes
     cola.display_queue()
 
+
 if __name__ == "__main__":
+
+```
+#PUNTO 3
+<img width="632" height="758" alt="image" src="https://github.com/user-attachments/assets/748c3af1-5a54-49c2-ace7-6c9ffb9d979d" />
+
+```
+class TrieNode:
+    def __init__(self):
+        self.hijos = {}  # Diccionario para los hijos
+        self.is_end_of_word = False  # Marca el final de una palabra
+
+
+class Trie:
+    def __init__(self):
+        self.raiz = TrieNode()  # Nodo raíz del Trie
+
+    def insert(self, palabra):
+        """
+        Inserta una palabra en el Trie.
+        """
+        nodo_actual = self.raiz
+        for letra in palabra:
+            if letra not in nodo_actual.hijos:
+                nodo_actual.hijos[letra] = TrieNode()
+            nodo_actual = nodo_actual.hijos[letra]
+        nodo_actual.is_end_of_word = True  # Marca el final de la palabra
+
+    def autocomplete(self, prefijo):
+        """
+        Devuelve todas las palabras que comienzan con el prefijo dado.
+        """
+        nodo_actual = self.raiz
+        resultados = []
+
+        # 1. Navega hasta el final del prefijo
+        for letra in prefijo:
+            if letra not in nodo_actual.hijos:
+                return []  # No se encuentran coincidencias
+            nodo_actual = nodo_actual.hijos[letra]
+
+        # 2. Realiza DFS (búsqueda en profundidad) desde el nodo final del prefijo
+        self._dfs(nodo_actual, prefijo, resultados)
+        return resultados
+
+    def _dfs(self, nodo, prefijo, resultados):
+        """
+        Realiza una búsqueda en profundidad para encontrar todas las palabras
+        desde el nodo dado, agregando las palabras encontradas a los resultados.
+        """
+        if nodo.is_end_of_word:
+            resultados.append(prefijo)
+
+        for letra, hijo in nodo.hijos.items():
+            self._dfs(hijo, prefijo + letra, resultados)
+
+
+# Función principal para probar el sistema
+def main():
+    trie = Trie()
+
+    # Insertar algunas palabras en el Trie
+    palabras = ["hola", "hoy", "hipopotamo", "huevo", "hoja", "hotel", "harina"]
+    for palabra in palabras:
+        trie.insert(palabra)
+
+    # Probar la función de autocompletar
+    prefijo = "ho"
+    print(f"Palabras que comienzan con '{prefijo}':")
+    print(trie.autocomplete(prefijo))
+
+    # Probar un prefijo sin coincidencias
+    prefijo_no_encontrado = "he"
+    print(f"Palabras que comienzan con '{prefijo_no_encontrado}':")
+    print(trie.autocomplete(prefijo_no_encontrado))
+
+
+if __name__ == "__main__":
+    main()
+
+
     main()
 
